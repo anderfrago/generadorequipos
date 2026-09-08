@@ -62,4 +62,15 @@ CREATE TABLE IF NOT EXISTS audit_log (
 CREATE INDEX IF NOT EXISTS idx_enrollments_class ON enrollments(class_id);
 CREATE INDEX IF NOT EXISTS idx_submissions_enrollment ON submissions(enrollment_id,revision DESC);
 CREATE INDEX IF NOT EXISTS idx_proposals_class ON proposals(class_id,created_at DESC);
-
+CREATE TABLE IF NOT EXISTS invitation_deliveries (
+ id TEXT PRIMARY KEY,
+ enrollment_id TEXT NOT NULL REFERENCES enrollments(id),
+ fingerprint TEXT NOT NULL,
+ recipient TEXT NOT NULL,
+ status TEXT NOT NULL CHECK(status IN ('SENDING','SENT','FAILED','UNKNOWN')),
+ message TEXT NOT NULL DEFAULT '',
+ created_at TEXT NOT NULL,
+ updated_at TEXT NOT NULL,
+ actor_id TEXT NOT NULL REFERENCES users(id)
+);
+CREATE INDEX IF NOT EXISTS idx_invitation_enrollment ON invitation_deliveries(enrollment_id,created_at DESC);

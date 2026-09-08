@@ -11,3 +11,5 @@ Verificado localmente el 8 de septiembre de 2026:
 La prueba del callback de Google simula la respuesta ya verificada por Authlib. No sustituye un inicio de sesión real con las credenciales del centro. La validación criptográfica OIDC corresponde a Authlib; no se ha reemplazado por una comprobación del correo enviada por el navegador.
 
 Pendiente en la cuenta de destino: configurar Google OAuth, completar `backend/.env`, crear la base y administrador, subir la compilación, configurar WSGI y comprobar un inicio de sesión real y las restricciones de red del plan gratuito. Seguir el capítulo 3.
+
+Actualización de invitaciones por correo: 23 pruebas de backend superadas y compilación Angular correcta. Se incluyen siete pruebas de invitaciones con SMTP simulado (contenido y destinatario individual, duplicados y reenvío, revocación, incertidumbre, permisos/configuración, TLS y errores de autenticación/cierre). Para comprobar la entrega real se requiere configurar la cuenta remitente y realizar un envío desde PythonAnywhere siguiendo el capítulo 7.

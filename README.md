@@ -23,6 +23,7 @@ scripts/           Extracción de textos originales y comprobaciones de equivale
 - Google OpenID Connect con dominio `cuatrovientos.org` y alta docente explícita. Roles administrador/docente y permisos por clase.
 - Clases, matrículas, docentes compartidos, observaciones y relaciones entre estudiantes.
 - Enlaces individuales copiables y descargables, con renovación y revocación.
+- Invitaciones de curso por correo mediante Google Workspace, con vista previa, envío individual o de pendientes, registro y reenvío explícito.
 - Cuestionario con confirmación inicial, borradores, guardado automático, envío, interpretación personalizada y reapertura con historial de revisiones.
 - Propuestas de equipos de 3 a 5 personas, cinco componentes de equilibrio, restricciones duras y preferencias blandas.
 - Alternativas, historial, movimientos e intercambios, bloqueos, regeneración parcial, deshacer, validación y reapertura.
@@ -35,7 +36,7 @@ scripts/           Extracción de textos originales y comprobaciones de equivale
 - Los textos de preguntas y personalización se extraen de los originales a `backend/app/questionnaire.json`. Producción no ejecuta JavaScript en el servidor ni requiere Apps Script.
 - El motor conserva las fórmulas y el orden de prioridades. La búsqueda usa el generador aleatorio de Python: las propuestas concretas no serán idénticas a las de JavaScript para una misma semilla. Se ha comprobado la equivalencia de las métricas con datos sintéticos.
 - El servicio de tokens se implementa en Python: enlaces derivados con HMAC, hash almacenado, versión y revocación. El token va en el fragmento de la URL y en cabeceras de la API, evitando su inclusión en rutas de peticiones del servidor. Cambiar `SECRET_KEY` invalida sesiones y requiere renovar los enlaces anteriores.
-- Por decisión del usuario, los enlaces se copian o descargan para distribuirlos manualmente. No se configura envío de correos.
+- Los enlaces se pueden copiar, descargar o enviar por correo desde la clase. El envío requiere configurar una cuenta Google Workspace en el servidor; consulta `manual/07-correo.md`.
 - Los PDF se generan al descargarlos; se han adaptado al formato de documento descargable. Los informes docentes y de alumnado tienen contenidos separados.
 
 ## Verificación

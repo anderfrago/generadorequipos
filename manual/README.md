@@ -10,5 +10,6 @@ Seguir este orden:
 4. [Actualizaciones, copias y recuperación](04-mantenimiento.md).
 5. [Uso para docentes y alumnado](05-uso.md).
 6. [Verificaciones realizadas](06-verificacion.md).
+7. [Invitaciones por correo con Google Workspace](07-correo.md).
 
 No es necesario compartir contraseñas ni secretos con quien mantiene el código. Los valores de Google y el administrador se configuran en `backend/.env` en el servidor.

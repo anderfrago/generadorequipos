@@ -26,6 +26,12 @@ def create_app(test_config=None):
         SESSION_COOKIE_SECURE=os.getenv("COOKIE_SECURE", "true").lower() == "true",
         PERMANENT_SESSION_LIFETIME=timedelta(hours=8), MAX_CONTENT_LENGTH=1_000_000,
         FRONTEND_DIST=os.getenv("FRONTEND_DIST", str(ROOT / "frontend" / "dist" / "browser")),
+        MAIL_HOST=os.getenv("MAIL_HOST", "smtp.gmail.com"),
+        MAIL_PORT=int(os.getenv("MAIL_PORT", "587")),
+        MAIL_USERNAME=os.getenv("MAIL_USERNAME", ""),
+        MAIL_PASSWORD=os.getenv("MAIL_PASSWORD", ""),
+        MAIL_FROM=os.getenv("MAIL_FROM", ""),
+        MAIL_FROM_NAME=os.getenv("MAIL_FROM_NAME", "Cuatrovientos · Equipos equilibrados"),
     )
     if test_config:
         app.config.update(test_config)
@@ -43,6 +49,8 @@ def create_app(test_config=None):
     app.register_blueprint(grouping_bp)
     from .reports import bp as reports_bp
     app.register_blueprint(reports_bp)
+    from .invitations import bp as invitations_bp
+    app.register_blueprint(invitations_bp)
 
     @app.after_request
     def security_headers(response):
@@ -93,6 +101,12 @@ def create_app(test_config=None):
         if not (dist / "index.html").is_file():
             raise click.ClickException("Falta index.html. Extrae el ZIP del frontend en la raíz del proyecto o configura FRONTEND_DIST.")
         click.echo("Compilación Angular encontrada.")
+
+    @app.cli.command("upgrade-db")
+    def upgrade_db():
+        """Add missing tables and indexes without changing users or existing data."""
+        init_db()
+        click.echo("Tablas e índices actualizados. Usuarios y datos conservados.")
 
     @app.cli.command("add-teacher")
     @click.argument("email")

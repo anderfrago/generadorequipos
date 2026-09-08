@@ -16,6 +16,8 @@ El historial conserva las propuestas y los datos utilizados para sus métricas. 
 
 ## Alumnado
 
+Para enviar invitaciones desde una clase, abrir **Invitaciones por correo** en Alumnado, revisar destinatarios y mensaje y enviar individualmente o a los pendientes. Requiere la configuración del [manual de correo](07-correo.md).
+
 Abrir el enlace individual, leer y confirmar la información inicial y responder. Los cambios se guardan automáticamente tras 20 segundos sin editar; también existe un botón de guardado manual. Esperar el estado **Guardado** antes de cerrar. Tras enviar, se muestra la devolución personalizada y las respuestas quedan cerradas hasta que el docente las reabra.
 
 ## Administrador
