@@ -1,0 +1,383 @@
+{
+  "version": "V3_REDUCIDA",
+  "items": [
+    [
+      "A",
+      1,
+      "Cuando tengo algo pendiente, me gusta empezar pronto en vez de dejarlo para más adelante.",
+      "IMP",
+      false
+    ],
+    [
+      "A",
+      2,
+      "Suelo apuntar fechas, citas o cosas importantes para no olvidarlas.",
+      "ORG",
+      false
+    ],
+    [
+      "A",
+      3,
+      "Me gusta probar aplicaciones, herramientas o formas nuevas de hacer las cosas.",
+      "EXP",
+      false
+    ],
+    [
+      "A",
+      4,
+      "Si noto que alguien está incómodo o preocupado, suelo darme cuenta.",
+      "INT",
+      false
+    ],
+    [
+      "A",
+      5,
+      "Si nadie se decide, suelo ser de las primeras personas en proponer algo.",
+      "IMP",
+      false
+    ],
+    [
+      "A",
+      6,
+      "Antes de entregar o enviar algo importante, suelo revisarlo.",
+      "ORG",
+      false
+    ],
+    [
+      "A",
+      7,
+      "A menudo se me ocurre más de una manera de hacer una misma cosa.",
+      "EXP",
+      false
+    ],
+    [
+      "A",
+      8,
+      "Si alguien me cuenta un problema, normalmente le escucho antes de darle una solución.",
+      "INT",
+      false
+    ],
+    [
+      "A",
+      9,
+      "No me importa tomar una decisión aunque exista la posibilidad de equivocarme.",
+      "IMP",
+      false
+    ],
+    [
+      "A",
+      10,
+      "Suelo guardar mis cosas importantes en lugares donde sé que podré encontrarlas.",
+      "ORG",
+      false
+    ],
+    [
+      "A",
+      11,
+      "Cuando algo me interesa, suelo buscar información por mi cuenta para saber más.",
+      "EXP",
+      false
+    ],
+    [
+      "A",
+      12,
+      "Si puedo ayudar a alguien que está atascado, normalmente me sale ofrecerme.",
+      "INT",
+      false
+    ],
+    [
+      "A",
+      13,
+      "Cuando aparece un problema, me cuesta dejarlo sin intentar resolverlo.",
+      "IMP",
+      false
+    ],
+    [
+      "A",
+      14,
+      "Si tengo un día con varias tareas, me gusta saber qué haré primero, después y al final.",
+      "ORG",
+      false
+    ],
+    [
+      "A",
+      15,
+      "Me gusta cambiar, personalizar o mejorar cosas en vez de quedarme siempre con la primera versión.",
+      "EXP",
+      false
+    ],
+    [
+      "A",
+      16,
+      "Cuando una decisión afecta a varias personas, pienso bastante en cómo les puede afectar.",
+      "INT",
+      false
+    ],
+    [
+      "B",
+      17,
+      "Antes de preguntar cómo se hace algo, suelo intentar resolverlo por mi cuenta.",
+      "AUT",
+      false
+    ],
+    [
+      "B",
+      18,
+      "Cuando no tengo claro cuál es el siguiente paso, suelo esperar a que alguien me diga qué hacer.",
+      "AUT",
+      true
+    ],
+    [
+      "B",
+      19,
+      "Si me comprometo a hacer una parte, normalmente la termino dentro del plazo.",
+      "RESP",
+      false
+    ],
+    [
+      "B",
+      20,
+      "Durante el tiempo de trabajo me distraigo y necesito que me recuerden que vuelva a la tarea.",
+      "RESP",
+      true
+    ],
+    [
+      "B",
+      21,
+      "Cuando tengo varias cosas pendientes, sé decidir qué hacer primero.",
+      "ORGP",
+      false
+    ],
+    [
+      "B",
+      22,
+      "Si nadie me ayuda a organizarme, puedo perder de vista tareas o fechas.",
+      "ORGP",
+      true
+    ],
+    [
+      "B",
+      23,
+      "Si alguien no hace su parte, muchas veces termino haciéndola yo para que el trabajo salga.",
+      "COOP",
+      true
+    ],
+    [
+      "B",
+      24,
+      "Soy capaz de decir a otra persona que una tarea le corresponde a ella, aunque me pida que la haga yo.",
+      "COOP",
+      false
+    ],
+    [
+      "B",
+      25,
+      "Cuando necesito algo, suelo explicarlo de forma que los demás entiendan qué necesito.",
+      "COMM",
+      false
+    ],
+    [
+      "B",
+      26,
+      "Puedo decir que no estoy de acuerdo sin atacar a nadie y sin dejar de escuchar.",
+      "COMM",
+      false
+    ],
+    [
+      "B",
+      27,
+      "Cuando hay tensión o conflicto, puedo intervenir sin empeorar el problema.",
+      "CONF",
+      false
+    ],
+    [
+      "B",
+      28,
+      "Si hay un conflicto entre personas del grupo, prefiero no decir nada aunque siga afectando al trabajo.",
+      "CONF",
+      true
+    ],
+    [
+      "B",
+      29,
+      "Si cambian las instrucciones o un plan, consigo reorganizarme y continuar.",
+      "ADAPT",
+      false
+    ],
+    [
+      "B",
+      30,
+      "Cuando algo no sale como esperaba, puedo quedarme bloqueado y me cuesta volver a empezar.",
+      "ADAPT",
+      true
+    ],
+    [
+      "B",
+      31,
+      "Si nadie empieza una tarea, muchas veces doy el primer paso.",
+      "INIT",
+      false
+    ],
+    [
+      "B",
+      32,
+      "Se me ocurren ideas, pero a veces las dejo a medias cuando desaparece la novedad.",
+      "INIT",
+      true
+    ]
+  ],
+  "conditions": [
+    [
+      "CALM",
+      "Trabajar en un ambiente relativamente tranquilo."
+    ],
+    [
+      "STEPS",
+      "Que las instrucciones estén divididas en pasos claros."
+    ],
+    [
+      "ROLES",
+      "Saber claramente qué tarea corresponde a cada persona."
+    ],
+    [
+      "CHECK",
+      "Tener recordatorios o seguimiento de lo que queda pendiente."
+    ],
+    [
+      "FREEDOM",
+      "Poder decidir por mí mismo/a cómo hacer parte del trabajo."
+    ],
+    [
+      "TALK",
+      "Poder hablar e intercambiar ideas mientras trabajo."
+    ],
+    [
+      "HELP",
+      "Tener a alguien a quien preguntar cuando me bloqueo."
+    ],
+    [
+      "PRED",
+      "Saber con antelación fechas, cambios y lo que se espera de mí."
+    ],
+    [
+      "NONE",
+      "Ninguna de estas especialmente."
+    ],
+    [
+      "OTHER",
+      "Otra."
+    ]
+  ],
+  "profiles": {
+    "IMP": {
+      "label": "Impulsor/a",
+      "verb": "Hace avanzar",
+      "contribution": "iniciativa, decisión y energía para hacer avanzar el trabajo"
+    },
+    "ORG": {
+      "label": "Organizador/a",
+      "verb": "Pone orden",
+      "contribution": "planificación, estructura, seguimiento y revisión"
+    },
+    "EXP": {
+      "label": "Explorador/a",
+      "verb": "Abre posibilidades",
+      "contribution": "curiosidad, investigación, alternativas e innovación"
+    },
+    "INT": {
+      "label": "Integrador/a",
+      "verb": "Une a las personas",
+      "contribution": "escucha, cooperación, comunicación y cohesión"
+    }
+  },
+  "functional": {
+    "AUT": {
+      "label": "Autonomía",
+      "what": "Capacidad para iniciar, continuar y tratar de resolver tareas sin necesitar indicaciones constantes.",
+      "interpretation": "Orienta sobre cómo afronta tareas y bloqueos antes de solicitar ayuda."
+    },
+    "RESP": {
+      "label": "Responsabilidad / fiabilidad",
+      "what": "Seguimiento de compromisos, aprovechamiento del tiempo y cumplimiento de tareas y plazos.",
+      "interpretation": "Orienta sobre la constancia con la que mantiene los compromisos asumidos."
+    },
+    "ORGP": {
+      "label": "Organización personal",
+      "what": "Capacidad para priorizar, controlar pendientes y ordenar el propio trabajo.",
+      "interpretation": "Orienta sobre cómo estructura tareas, fechas y prioridades."
+    },
+    "COOP": {
+      "label": "Cooperación y límites",
+      "what": "Indicador histórico que combinaba disposición a ayudar y mantenimiento del reparto de responsabilidades.",
+      "interpretation": "Solo aparece en cuestionarios anteriores a V1.2 y debe interpretarse con prudencia porque reúne dos dimensiones diferentes."
+    },
+    "COOPERATION": {
+      "label": "Cooperación",
+      "what": "Disposición a permanecer conectado con el trabajo común, compartir información y colaborar cuando puede ayudar a que el equipo avance.",
+      "interpretation": "Orienta sobre la conexión con el trabajo común; no mide disponibilidad ilimitada ni obliga a asumir tareas ajenas."
+    },
+    "LIMITS": {
+      "label": "Límites y reparto de responsabilidades",
+      "what": "Capacidad para ayudar manteniendo claro qué responsabilidad corresponde a cada persona.",
+      "interpretation": "Orienta sobre el mantenimiento de un reparto saludable; no equivale a menor cooperación."
+    },
+    "COMM": {
+      "label": "Comunicación / asertividad",
+      "what": "Capacidad para expresar necesidades, ideas y desacuerdos con claridad, escucha y respeto.",
+      "interpretation": "Orienta sobre cómo comunica lo que necesita y cómo participa en desacuerdos."
+    },
+    "CONF": {
+      "label": "Gestión del conflicto",
+      "what": "Capacidad para abordar tensiones o desacuerdos sin empeorar el problema ni ignorarlo.",
+      "interpretation": "Orienta sobre la forma de afrontar conflictos que afectan al trabajo."
+    },
+    "ADAPT": {
+      "label": "Adaptación / desbloqueo",
+      "what": "Capacidad para reorganizarse, buscar alternativas y continuar cuando cambian las condiciones o algo no funciona.",
+      "interpretation": "Orienta sobre la respuesta ante cambios, errores y bloqueos."
+    },
+    "INIT": {
+      "label": "Iniciativa / ejecución",
+      "what": "Capacidad para dar primeros pasos y sostener la ejecución hasta convertir ideas en acciones.",
+      "interpretation": "Orienta sobre la puesta en marcha y continuidad de las tareas."
+    }
+  },
+  "personalization": {
+    "AUT": {
+      "strength": "Tus respuestas sugieren que normalmente intentas avanzar y buscar una primera solución antes de pedir ayuda. Esto puede ayudar al equipo a mantener el trabajo en marcha.",
+      "development": "Puede resultarte útil practicar un primer paso antes de solicitar ayuda. Cuando te bloquees, prueba a identificar qué sabes, qué falta y una alternativa concreta que puedas intentar."
+    },
+    "RESP": {
+      "strength": "Tus respuestas sugieren constancia con las tareas y los compromisos. Esta fiabilidad puede ayudar a que el equipo confíe en el reparto acordado.",
+      "development": "Puede resultarte útil reforzar el seguimiento de compromisos y plazos. Anota qué has asumido, fija una revisión intermedia y avisa pronto si detectas que no llegarás."
+    },
+    "ORGP": {
+      "strength": "Tus respuestas sugieren facilidad para priorizar y controlar lo pendiente. Esto puede ayudar al equipo a mantener una visión clara del trabajo.",
+      "development": "Puede resultarte útil acompañar la acción con algo más de planificación. Antes de empezar, divide la tarea en pasos, decide qué debe quedar terminado y revisa después qué sigue pendiente."
+    },
+    "COOPERATION": {
+      "strength": "Tus respuestas sugieren que sueles mantenerte conectado/a con el trabajo común y compartir ayuda o información. Esto puede facilitar que el equipo avance de forma coordinada.",
+      "development": "Puede resultarte útil conectar con mayor frecuencia tu tarea con el trabajo común. Prueba a preguntar qué información necesita el resto y a compartir brevemente cómo avanza tu parte."
+    },
+    "LIMITS": {
+      "strength": "Tus respuestas sugieren que puedes ayudar manteniendo claro el reparto de responsabilidades. Esto favorece una colaboración más justa y sostenible.",
+      "development": "Puede resultarte útil ayudar sin terminar asumiendo responsabilidades ajenas. Cuando una parte quede pendiente, prueba a comunicarlo, ofrecer apoyo concreto y acordar quién debe completarla."
+    },
+    "COMM": {
+      "strength": "Tus respuestas sugieren claridad para expresar necesidades, ideas o desacuerdos escuchando a otras personas. Esto puede mejorar las decisiones del equipo.",
+      "development": "Puede resultarte útil practicar cómo expresar necesidades, ideas y desacuerdos con claridad. Antes de intervenir, formula qué observas, qué necesitas y qué propuesta concreta quieres plantear."
+    },
+    "CONF": {
+      "strength": "Tus respuestas sugieren recursos para abordar desacuerdos sin ignorarlos ni empeorarlos. Esto puede ayudar al equipo a resolver tensiones necesarias.",
+      "development": "Puede resultarte útil practicar cómo abordar desacuerdos necesarios. Describe el problema sin atacar, escucha las versiones implicadas y propón un acuerdo verificable."
+    },
+    "ADAPT": {
+      "strength": "Tus respuestas sugieren facilidad para reorganizarte y continuar cuando cambia un plan o algo no funciona. Esto aporta flexibilidad ante imprevistos.",
+      "development": "Puede resultarte útil entrenar alternativas cuando el plan inicial deja de funcionar. Detente, identifica qué ha cambiado y elige un siguiente paso pequeño que permita continuar."
+    },
+    "INIT": {
+      "strength": "Tus respuestas sugieren facilidad para dar primeros pasos y convertir decisiones en acciones. Esto puede ayudar a que el equipo no se quede únicamente en las ideas.",
+      "development": "Puede resultarte útil reforzar la puesta en marcha y el cierre de tareas. Elige un primer paso concreto, fija cuándo lo harás y comprueba después qué falta para terminar."
+    }
+  }
+}

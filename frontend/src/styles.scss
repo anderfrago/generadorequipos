@@ -1,0 +1,63 @@
+$primary: #0f4285;
+$secondary: #5d6b7c;
+$body-bg: #ffffff;
+$body-color: #243247;
+$border-color: #dce3ed;
+$border-radius: .65rem;
+$font-family-sans-serif: 'Segoe UI', system-ui, -apple-system, sans-serif;
+@use 'bootstrap/scss/bootstrap' with (
+  $primary: $primary, $secondary: $secondary, $body-bg: $body-bg,
+  $body-color: $body-color, $border-color: $border-color,
+  $border-radius: $border-radius, $font-family-sans-serif: $font-family-sans-serif
+);
+
+:root {color-scheme: light;}
+body {min-width: 320px;}
+h1,h2,h3 {letter-spacing: -.025em;}
+h1 {font-weight: 650;}
+button,a,input,textarea,select {touch-action: manipulation;}
+a {text-underline-offset: 3px;}
+.topbar {background: #fff; border-bottom: 1px solid $border-color; padding: 1.15rem 0;}
+.brand {display: flex;align-items: center;gap: .7rem;font-weight: 650;color: $body-color;text-decoration: none;}
+.brand-logo {display: block;width: 180px;height: auto;flex-shrink: 0;}
+.brand-title {border-left: 1px solid $border-color;padding-left: 1rem;}
+.topbar > .container {flex-wrap: wrap;}
+.topbar nav a {color: $secondary;font-size: .9rem;text-decoration: none;}
+.eyebrow {font-size: .72rem;font-weight: 700;letter-spacing: .16em;color: $primary;}
+.welcome {max-width: 1000px;margin: 3rem auto;}
+.welcome h1 {font-size: clamp(2.5rem,5vw,4.5rem);line-height: 1.08;margin: 1.3rem 0;}
+.welcome h1 em {font-style: normal;color: $primary;}
+.welcome .lead {max-width: 670px;color: $secondary;}
+.card {border: 1px solid $border-color;box-shadow: 0 3px 12px rgba(15,66,133,.025);}
+.teacher-card {background: #ffffff;}
+.step {font-size: .75rem;letter-spacing: .1em;font-weight: 650;}
+.btn {font-weight: 550;padding: .6rem 1rem;}
+.btn-sm {padding: .35rem .65rem;font-size: .78rem;}
+.class-card {transition: border-color .15s,box-shadow .15s;}
+.class-card:hover {border-color: $primary;box-shadow: 0 4px 15px #0f428512;}
+.empty-state {padding: 3rem;border: 1px dashed #bccbdf;border-radius: .8rem;background: #ffffff;}
+.class-count {display: flex;flex-direction: column;text-align: right;color: $secondary;}
+.class-count strong {font-size: 2.2rem;color: $primary;}
+.class-count span {font-size: .8rem;}
+.nav-pills {border-bottom: 1px solid $border-color;padding-bottom: 1rem;}
+.nav-link {color: $primary;}
+.table th {background: #ffffff;font-size: .75rem;text-transform: uppercase;letter-spacing: .06em;color: $secondary;padding: 1rem;}
+.table td {padding: 1rem;}
+.login-card {max-width: 500px;margin-top: 3rem;}
+.indicator {padding: .65rem 0;border-bottom: 1px solid $border-color;}
+.score {background: #ffffff;color: $primary;font-weight: 700;padding: .15rem .6rem;border-radius: 1rem;}
+.questionnaire {max-width: 830px;}
+.question legend {font-size: 1rem;font-weight: 600;line-height: 1.6;float: none;width: auto;padding: 0;}
+.question-number {display: inline-block;color: $secondary;margin-right: .75rem;font-size: .8rem;}
+.scale-option {font-size: .82rem;display: flex;align-items: center;justify-content: center;min-height: 50px;}
+.btn-check:checked+.btn {background: $primary;color: white;border-color: $primary;}
+.progress-panel {position: sticky;top: 0;z-index: 5;background: $body-bg;padding: 1rem 0;}
+.progress {height: 6px;}
+.profile-value {padding: 1rem;background: #ffffff;border-radius: .6rem;display: flex;flex-direction: column;}
+.profile-value strong {font-size: 1.5rem;}
+.profile-value span {font-size: .8rem;color: $secondary;}
+.work-status {position: fixed;right: 1rem;bottom: 1rem;background: $primary;color: white;padding: .8rem 1.3rem;border-radius: 2rem;z-index: 50;box-shadow: 0 4px 12px #0002;}
+pre {white-space: pre-wrap;}
+@media(max-width: 575px){.topbar .brand{font-size: .85rem}.topbar nav a{font-size: .75rem}.welcome{margin-top: 1rem}.question{padding: 1rem!important}.table td{padding: .75rem}.class-count{text-align: left}.btn{font-size: .85rem}}
+
+@media(max-width: 575px){.brand{flex-direction: column;align-items: flex-start;gap: .35rem}.brand-logo{width: 140px}.brand-title{border-left: 0;padding-left: 0;font-size: .75rem}.topbar nav{gap: .5rem!important}.topbar{padding: .8rem 0}}
