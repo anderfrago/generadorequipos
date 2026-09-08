@@ -11,3 +11,4 @@ frontend/.angular/
 frontend/dist/
 tmp/
 GScripts/
+deploy/

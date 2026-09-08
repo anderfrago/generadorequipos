@@ -15,7 +15,8 @@ export class TeacherPage {
   tab = signal('students'); users = signal<any[]>([]);
   newClass = {name: '', academic_year: '2026-2027', evaluation_period: 'INICIAL'};
   roster = ''; relation = {student_a: '', student_b: '', type: 'NO_JUNTAR', comment: ''}; teacherEmail = '';
-  newUser = {email: '', name: '', role: 'TEACHER'}; sizes = ''; studentA = ''; studentB = ''; toTeam = 0; deletion = '';
+  editingUser = signal<string | null>(null); deletingUser = signal<any>(null);
+  newUser = {email: '', name: '', role: 'TEACHER', active: true}; sizes = ''; studentA = ''; studentB = ''; toTeam = 0; deletion = '';
   constructor() { if(this.api.user()) void this.run(async () => {await this.loadClasses();}); }
   async run(fn: () => Promise<void>) { if(this.busy()) return; this.busy.set(true); this.error.set(''); this.message.set(''); try { await fn(); } catch(e) {this.error.set((e as Error).message);} finally {this.busy.set(false);} }
   async loadClasses() {this.classes.set(await this.api.request<ClassInfo[]>('/classes'));}
@@ -43,6 +44,10 @@ export class TeacherPage {
   saveClass() {void this.run(async () => {await this.api.request('/classes/'+this.detail()!.classInfo.id,'PATCH',this.detail()!.classInfo); await this.loadClasses(); this.message.set('Clase actualizada.');});}
   deleteClass() {void this.run(async () => {await this.api.request('/classes/'+this.detail()!.classInfo.id,'DELETE',{confirmation:this.deletion}); this.detail.set(null); this.deletion=''; await this.loadClasses();});}
   admin() {this.tab.set('admin'); void this.run(async()=>{this.users.set(await this.api.request<any[]>('/users'));});}
-  addUser() {void this.run(async()=>{await this.api.request('/users','POST',this.newUser); this.users.set(await this.api.request<any[]>('/users')); this.message.set('Cuenta autorizada.');});}
+  editUser(user:any) {this.editingUser.set(user.id); this.newUser={email:user.email,name:user.name,role:user.role,active:!!user.active};}
+  resetUser() {this.editingUser.set(null);this.newUser={email:'',name:'',role:'TEACHER',active:true};}
+  async refreshUsers() {await this.api.session(); if(this.api.user()?.role==='ADMIN') this.users.set(await this.api.request<any[]>('/users')); else {this.users.set([]);this.tab.set('students');} await this.loadClasses();}
+  addUser() {void this.run(async()=>{const id=this.editingUser();await this.api.request(id?'/users/'+id:'/users',id?'PATCH':'POST',this.newUser);this.resetUser();await this.refreshUsers();this.message.set('Usuario guardado.');});}
+  deleteUser() {void this.run(async()=>{await this.api.request('/users/'+this.deletingUser().id,'DELETE',{});this.deletingUser.set(null);this.resetUser();await this.refreshUsers();this.message.set('Usuario eliminado. Su acceso ha quedado desactivado.');});}
   exportUrl(format:string) {return '/api/classes/'+this.detail()!.classInfo.id+'/export/'+format;}
 }

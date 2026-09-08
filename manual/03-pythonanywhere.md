@@ -97,6 +97,24 @@ Activar **Force HTTPS** en el panel cuando esté disponible y pulsar **Reload**.
 
 ## Límites y diagnóstico
 
+### Error «Compila Angular siguiendo manual/01-desarrollo.md.»
+
+La API Flask funciona, pero no encuentra `index.html`. La carpeta compilada está excluida de Git: subir solo el repositorio no la incluye.
+
+En tu ordenador, ejecutar `npm run build` dentro de `frontend` y después, desde la raíz, `python scripts/package_frontend.py`. Subir `deploy/frontend-pythonanywhere.zip` a PythonAnywhere y extraerlo desde la raíz del proyecto:
+
+```bash
+cd /home/USUARIO/formacion-equipos
+unzip -o /home/USUARIO/frontend-pythonanywhere.zip
+source .venv/bin/activate
+cd backend
+flask --app app:create_app check-frontend
+```
+
+Adaptar la ubicación del ZIP a la carpeta donde se ha subido. El archivo incluye la estructura `frontend/dist/browser/`. No extraerlo dentro de `backend` ni dentro de `frontend`, porque duplicaría niveles.
+
+Con el backend actualizado, se puede indicar una ruta distinta mediante `FRONTEND_DIST=/ruta/absoluta/a/la/carpeta/que/contiene/index.html` en `backend/.env`. Pulsar **Reload** en Web después de actualizar código o configuración.
+
 Consultar las condiciones de la cuenta gratuita y renovar la web desde el panel antes de la fecha de caducidad que muestre. Vigilar almacenamiento y CPU. SQLite se ha elegido para este despliegue pequeño; las operaciones de escritura se serializan.
 
 - **502/500:** revisar el error log enlazado desde Web; comprobar dependencias, secreto y versión Python.
@@ -111,4 +129,3 @@ Referencias oficiales:
 - https://help.pythonanywhere.com/pages/Flask/
 - https://help.pythonanywhere.com/pages/FreeAccountsFeatures/
 - https://help.pythonanywhere.com/pages/UsingANewDomainForExistingWebApp/
-

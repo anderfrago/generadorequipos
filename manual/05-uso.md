@@ -22,6 +22,8 @@ Abrir el enlace individual, leer y confirmar la información inicial y responder
 
 Puede acceder a todas las clases y autorizar cuentas desde **Administrar docentes**. Los docentes ordinarios solo acceden a las clases que crean o a las que otro docente autorizado les asigna en Ajustes. Autorizar una cuenta no concede acceso automático a todas las clases.
 
+La gestión de usuarios permite crear, consultar y editar nombre, correo corporativo, rol (Administrador o Docente) y estado. Eliminar desactiva el acceso conservando la autoría del historial; para recuperar el acceso, editar y marcar Usuario activo. No se permite eliminar, desactivar o quitar el rol al último administrador activo. Los cambios de rol y estado se comprueban en cada petición, también en sesiones ya abiertas.
+
 ## Cómo interpretar
 
 Los perfiles y valores funcionales proceden de autoobservación. Las evidencias mixtas señalan respuestas divergentes en los dos ítems de un indicador. Los índices de equipos ayudan a comparar combinaciones; no son notas, diagnósticos ni predicciones del rendimiento de una persona.

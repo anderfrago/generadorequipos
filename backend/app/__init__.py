@@ -25,7 +25,7 @@ def create_app(test_config=None):
         SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE="Lax",
         SESSION_COOKIE_SECURE=os.getenv("COOKIE_SECURE", "true").lower() == "true",
         PERMANENT_SESSION_LIFETIME=timedelta(hours=8), MAX_CONTENT_LENGTH=1_000_000,
-        FRONTEND_DIST=str(ROOT / "frontend" / "dist" / "browser"),
+        FRONTEND_DIST=os.getenv("FRONTEND_DIST", str(ROOT / "frontend" / "dist" / "browser")),
     )
     if test_config:
         app.config.update(test_config)
@@ -84,6 +84,15 @@ def create_app(test_config=None):
         if email:
             register_user(email, email.split("@")[0], "ADMIN")
         click.echo("SQLite inicializado. Los datos existentes se conservan.")
+
+    @app.cli.command("check-frontend")
+    def check_frontend():
+        """Show the exact directory that must contain the Angular build."""
+        dist = Path(app.config["FRONTEND_DIST"])
+        click.echo("Directorio Angular: " + str(dist))
+        if not (dist / "index.html").is_file():
+            raise click.ClickException("Falta index.html. Extrae el ZIP del frontend en la raíz del proyecto o configura FRONTEND_DIST.")
+        click.echo("Compilación Angular encontrada.")
 
     @app.cli.command("add-teacher")
     @click.argument("email")

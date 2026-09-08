@@ -5,7 +5,7 @@ import re
 import unicodedata
 from datetime import datetime, timezone
 from uuid import uuid4
-from flask import Blueprint, abort, g, jsonify, request
+from flask import Blueprint, abort, g, jsonify, request, current_app
 from .auth import teacher, class_access, register_user
 from .db import get_db
 
@@ -251,12 +251,44 @@ def users():
 def authorize_user():
     if g.user["role"] != "ADMIN":
         abort(403)
-    data = payload()
-    role = data.get("role", "TEACHER")
-    if role not in ("ADMIN", "TEACHER"):
-        abort(400, "Rol no válido.")
-    try:
-        register_user(text_field(data, "email", 254, True), text_field(data, "name", required=True), role)
-    except ValueError as error:
-        abort(400, str(error))
+    name, email, role, active = user_fields(payload())
+    user_id = uid()
+    with get_db():
+        get_db().execute("INSERT INTO users(id,email,name,role,active,created_at) VALUES(?,?,?,?,?,?)",
+                         (user_id,email,name,role,int(active),now()))
+        audit("CREATE_USER", user_id)
+    return jsonify(id=user_id), 201
+
+
+def user_fields(data):
+    name = text_field(data, "name", required=True)
+    email = text_field(data, "email", 254, True).lower()
+    if not re.fullmatch(r"[^\s@]+@" + re.escape(current_app.config["TEACHER_DOMAIN"]), email):
+        abort(400, "El correo debe pertenecer al dominio docente.")
+    role, active = data.get("role", "TEACHER"), data.get("active", True)
+    if role not in ("ADMIN", "TEACHER") or type(active) is not bool:
+        abort(400, "Rol o estado no válido.")
+    return name, email, role, active
+
+
+@bp.patch("/users/<user_id>")
+@bp.delete("/users/<user_id>")
+@teacher
+def modify_user(user_id):
+    if g.user["role"] != "ADMIN":
+        abort(403)
+    db = get_db()
+    with db:
+        db.execute("BEGIN IMMEDIATE")
+        user = db.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
+        if not user:
+            abort(404, "Usuario no encontrado.")
+        deleting = request.method == "DELETE"
+        name,email,role,active = (user["name"],user["email"],user["role"],False) if deleting else user_fields(payload())
+        if user["role"] == "ADMIN" and user["active"] and (role != "ADMIN" or not active):
+            if db.execute("SELECT COUNT(*) FROM users WHERE role='ADMIN' AND active=1").fetchone()[0] <= 1:
+                abort(409, "Debe quedar al menos un administrador activo.")
+        # Logical deletion preserves the authorship of classes, observations and proposals.
+        db.execute("UPDATE users SET name=?,email=?,role=?,active=? WHERE id=?", (name,email,role,int(active),user_id))
+        audit("DELETE_USER" if deleting else "UPDATE_USER", user_id)
     return jsonify(ok=True)
