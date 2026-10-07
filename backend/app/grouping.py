@@ -40,7 +40,8 @@ def proposal_row(proposal_id):
 
 def public(row):
     return dict(json.loads(row["data"]), id=row["id"], class_id=row["class_id"], status=row["status"],
-                kind=row["kind"], version=row["version"], created_at=row["created_at"])
+                kind=row["kind"], version=row["version"], created_at=row["created_at"],
+                reviewed_by=row["reviewed_by"], reviewed_at=row["reviewed_at"])
 
 
 def check_partition(model, teams):
@@ -141,6 +142,7 @@ def change(proposal_id):
             status = "DRAFT"
         elif action == "validate":
             status = "VALIDATED"
+            db.execute("UPDATE proposals SET reviewed_by=?,reviewed_at=? WHERE id=?", (g.user["id"], now(), proposal_id))
         elif action == "lock":
             i = request_data.get("index")
             if type(i) is not int or not 0 <= i < len(teams) or type(request_data.get("locked")) is not bool:

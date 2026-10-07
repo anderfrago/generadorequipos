@@ -13,7 +13,7 @@ from flask import Blueprint, abort, current_app, g, jsonify, request
 from .auth import teacher, class_access
 from .classes import enrollment, now, payload, audit
 from .db import get_db
-from .students import latest, make_token
+from .students import latest, make_token, link_expired
 
 bp = Blueprint('invitations', __name__, url_prefix='/api')
 
@@ -127,7 +127,7 @@ def preview(class_id):
         reason = ''
         if not valid_email(en['email']):
             reason = 'Falta un correo válido.'
-        elif not en['token_hash'] or not hmac.compare_digest(en['token_hash'], hashlib.sha256(make_token(en['id'], en['token_version']).encode()).hexdigest()):
+        elif link_expired(en) or not en['token_hash'] or not hmac.compare_digest(en['token_hash'], hashlib.sha256(make_token(en['id'], en['token_version']).encode()).hexdigest()):
             reason = 'Genera o renueva el enlace individual antes de enviar.'
         elif sub and sub['status'] == 'SUBMITTED':
             reason = 'Cuestionario ya enviado.'
@@ -167,7 +167,7 @@ def send_invitation(class_id, student_id):
         if not valid_email(student['email']):
             abort(400, 'El alumno necesita un correo válido.')
         token = make_token(en['id'], en['token_version'])
-        if not en['token_hash'] or not hmac.compare_digest(en['token_hash'], hashlib.sha256(token.encode()).hexdigest()):
+        if link_expired(en) or not en['token_hash'] or not hmac.compare_digest(en['token_hash'], hashlib.sha256(token.encode()).hexdigest()):
             abort(409, 'Genera o renueva el enlace individual antes de enviar la invitación.')
         sub = latest(en['id'])
         if sub and sub['status'] == 'SUBMITTED':

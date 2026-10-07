@@ -1,6 +1,8 @@
 import hashlib
 import hmac
 import json
+import time
+from datetime import datetime, timezone, timedelta
 from urllib.parse import urlencode
 from flask import Blueprint, abort, current_app, jsonify, request
 from .auth import teacher, class_access
@@ -15,17 +17,44 @@ def make_token(enrollment_id, version):
     return hmac.new(current_app.config["SECRET_KEY"].encode(), f"student:{enrollment_id}:{version}".encode(), hashlib.sha256).hexdigest()
 
 
+def link_expired(en):
+    try:
+        return not en["token_expires_at"] or datetime.fromisoformat(en["token_expires_at"]) <= datetime.now(timezone.utc)
+    except (ValueError, TypeError):
+        return True
+
+
+def failure_key():
+    window=int(time.time())//900
+    return hmac.new(current_app.config['SECRET_KEY'].encode(),f"{window}:{request.remote_addr}".encode(),hashlib.sha256).hexdigest()
+
+
+def reject_link(message):
+    instant=int(time.time()); window=instant//900; key=failure_key()
+    db=get_db()
+    with db:
+        db.execute("DELETE FROM link_failures WHERE expires_at<=?",(instant,))
+        db.execute("INSERT INTO link_failures VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET attempts=attempts+1",(key,(window+1)*900))
+        count=db.execute("SELECT attempts FROM link_failures WHERE key=?",(key,)).fetchone()[0]
+    if count>100:
+        abort(429,"Demasiados enlaces no válidos. Espera unos minutos o consulta al centro.")
+    abort(401,message)
+
+
 def access():
+    failures=get_db().execute("SELECT attempts FROM link_failures WHERE key=?",(failure_key(),)).fetchone()
+    if failures and failures[0]>100:
+        abort(429,"Demasiados enlaces no válidos. Espera unos minutos o consulta al centro.")
     token = request.headers.get("X-Student-Token", "")
     code = request.headers.get("X-Class-Code", "")
     if not token or not code or len(token) > 200:
-        abort(401, "Necesitas tu enlace individual.")
+        reject_link("Necesitas tu enlace individual.")
     row = get_db().execute("SELECT e.*,s.name student_name,c.name class_name,c.academic_year FROM enrollments e "
                             "JOIN classes c ON c.id=e.class_id JOIN students s ON s.id=e.student_id "
                             "WHERE c.code=? AND e.token_hash=? AND e.active=1 AND c.active=1",
                             (code, hashlib.sha256(token.encode()).hexdigest())).fetchone()
-    if not row or not hmac.compare_digest(token, make_token(row["id"], row["token_version"])):
-        abort(401, "Este enlace no es válido o ha sido revocado. Solicita uno nuevo al docente.")
+    if not row or link_expired(row) or not hmac.compare_digest(token, make_token(row["id"], row["token_version"])):
+        reject_link("Este enlace no es válido, ha caducado o ha sido revocado. Solicita uno nuevo al docente.")
     return row
 
 
@@ -54,14 +83,16 @@ def student_link(class_id, student_id):
             db.execute("UPDATE enrollments SET token_hash=NULL WHERE id=?", (en["id"],))
             audit("REVOKE_LINK", en["id"])
             return jsonify(ok=True)
-        if action == "rotate" or not en["token_hash"]:
+        renewed = action == "rotate" or not en["token_hash"] or link_expired(en)
+        if renewed:
             version += 1
         token = make_token(en["id"], version)
-        db.execute("UPDATE enrollments SET token_version=?,token_hash=? WHERE id=?",
-                   (version, hashlib.sha256(token.encode()).hexdigest(), en["id"]))
+        expires = (datetime.now(timezone.utc) + timedelta(days=current_app.config["STUDENT_LINK_DAYS"])).isoformat() if renewed else en["token_expires_at"]
+        db.execute("UPDATE enrollments SET token_version=?,token_hash=?,token_expires_at=? WHERE id=?",
+                   (version, hashlib.sha256(token.encode()).hexdigest(), expires, en["id"]))
         audit("ISSUE_LINK", en["id"])
     link = current_app.config["PUBLIC_BASE_URL"] + "/student#" + urlencode(dict(code=cls["code"], token=token))
-    return jsonify(url=link)
+    return jsonify(url=link, expires_at=expires)
 
 
 @bp.get("/student")

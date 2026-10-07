@@ -12,3 +12,6 @@ frontend/dist/
 tmp/
 GScripts/
 deploy/
+
+.tmp/
+dist/

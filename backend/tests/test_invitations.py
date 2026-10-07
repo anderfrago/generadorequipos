@@ -87,6 +87,7 @@ def test_unconfigured_mail_and_unauthorized_access(roster,app,post,client):
         uid=get_db().execute("SELECT id FROM users WHERE role='TEACHER'").fetchone()['id']
     with client.session_transaction() as session:
         session['user_id']=uid
+        session['auth_version']=1
     assert client.get(f'/api/classes/{cid}/invitations').status_code==403
 
 

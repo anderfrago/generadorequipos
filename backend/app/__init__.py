@@ -33,10 +33,17 @@ def create_app(test_config=None):
         MAIL_FROM=os.getenv("MAIL_FROM", ""),
         MAIL_FROM_NAME=os.getenv("MAIL_FROM_NAME", "Cuatrovientos · Equipos equilibrados"),
     )
+    for key in ("RETENTION_DAYS", "AUDIT_RETENTION_DAYS", "PRIVACY_CONTROLLER", "PRIVACY_CONTACT", "PRIVACY_LEGAL_BASIS", "PRIVACY_RETENTION", "PRIVACY_PROVIDERS"):
+        app.config[key] = os.getenv(key, "")
+    app.config["STUDENT_LINK_DAYS"] = int(os.getenv("STUDENT_LINK_DAYS", "7"))
     if test_config:
         app.config.update(test_config)
-    if len(app.config["SECRET_KEY"]) < 32:
+    if len(app.config["SECRET_KEY"]) < 32 or any(word in app.config["SECRET_KEY"].lower() for word in ("cambia", "dev-change")):
         raise RuntimeError("Configura SECRET_KEY con al menos 32 caracteres en backend/.env.")
+    if not 1 <= app.config["STUDENT_LINK_DAYS"] <= 90:
+        raise RuntimeError("STUDENT_LINK_DAYS debe estar entre 1 y 90")
+    from .privacy import register_privacy
+    register_privacy(app)
     app.teardown_appcontext(close_db)
     app.before_request(csrf_protect)
     configure_oauth(app)

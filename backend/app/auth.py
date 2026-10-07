@@ -20,10 +20,17 @@ def configure_oauth(app):
     )
 
 
+def session_user():
+    user = get_db().execute("SELECT * FROM users WHERE id=? AND active=1", (session.get("user_id"),)).fetchone()
+    if not user or user["auth_version"] != session.get("auth_version") or not user["email"].endswith("@" + current_app.config["TEACHER_DOMAIN"]):
+        return None
+    return user
+
+
 def teacher(fn):
     @wraps(fn)
     def wrapped(*args, **kwargs):
-        g.user = get_db().execute("SELECT * FROM users WHERE id=? AND active=1", (session.get("user_id"),)).fetchone()
+        g.user = session_user()
         if not g.user:
             abort(401, "Inicia sesión con tu cuenta docente.")
         return fn(*args, **kwargs)
@@ -52,8 +59,8 @@ def csrf_protect():
 @bp.get("/api/session")
 def current_session():
     session.setdefault("csrf", secrets.token_urlsafe(32))
-    user = get_db().execute("SELECT id,email,name,role FROM users WHERE id=? AND active=1", (session.get("user_id"),)).fetchone()
-    return jsonify(user=dict(user) if user else None, csrf=session["csrf"])
+    user = session_user()
+    return jsonify(user={key:user[key] for key in ("id","email","name","role")} if user else None, csrf=session["csrf"])
 
 
 @bp.get("/auth/google")
@@ -69,7 +76,7 @@ def callback():
     try:
         token = oauth.google.authorize_access_token()
     except Exception:
-        current_app.logger.warning("Google OAuth callback failed", exc_info=True)
+        current_app.logger.warning("Google OAuth callback failed")
         abort(401, "No se pudo verificar el acceso de Google. Vuelve a iniciar sesión.")
     # Authlib verifies OIDC signature, issuer, audience, expiration and nonce.
     info = token.get("userinfo", {})
@@ -81,14 +88,23 @@ def callback():
     user = db.execute("SELECT * FROM users WHERE email=?", (email,)).fetchone()
     if not user or not user["active"]:
         abort(403, "Tu cuenta todavía no está autorizada. Contacta con el administrador.")
+    subject = info.get("sub")
+    if not subject or (user["google_subject"] and user["google_subject"] != subject):
+        abort(403, "La identidad de Google no coincide con la cuenta autorizada.")
+    with db:
+        db.execute("UPDATE users SET google_subject=? WHERE id=?", (subject,user["id"]))
     session.clear()
-    session.update(user_id=user["id"], csrf=secrets.token_urlsafe(32))
+    session.update(user_id=user["id"], auth_version=user["auth_version"], csrf=secrets.token_urlsafe(32))
     session.permanent = True
     return redirect("/teacher")
 
 
 @bp.post("/api/logout")
 def logout():
+    user = session_user()
+    if user:
+        with get_db():
+            get_db().execute("UPDATE users SET auth_version=auth_version+1 WHERE id=?", (user["id"],))
     session.clear()
     return jsonify(ok=True)
 
@@ -101,7 +117,7 @@ def register_user(email, name, role="TEACHER"):
     with db:
         db.execute(
             "INSERT INTO users(id,email,name,role,created_at) VALUES(?,?,?,?,?) "
-            "ON CONFLICT(email) DO UPDATE SET name=excluded.name,role=excluded.role,active=1",
+            "ON CONFLICT(email) DO UPDATE SET name=excluded.name,role=excluded.role,active=1,auth_version=users.auth_version+1",
             (str(uuid4()), email, name, role, datetime.now(timezone.utc).isoformat()),
         )
 

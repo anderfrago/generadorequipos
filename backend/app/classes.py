@@ -289,6 +289,6 @@ def modify_user(user_id):
             if db.execute("SELECT COUNT(*) FROM users WHERE role='ADMIN' AND active=1").fetchone()[0] <= 1:
                 abort(409, "Debe quedar al menos un administrador activo.")
         # Logical deletion preserves the authorship of classes, observations and proposals.
-        db.execute("UPDATE users SET name=?,email=?,role=?,active=? WHERE id=?", (name,email,role,int(active),user_id))
+        db.execute("UPDATE users SET name=?,email=?,role=?,active=?,auth_version=auth_version+1,google_subject=CASE WHEN email=? THEN google_subject ELSE NULL END WHERE id=?", (name,email,role,int(active),email,user_id))
         audit("DELETE_USER" if deleting else "UPDATE_USER", user_id)
     return jsonify(ok=True)

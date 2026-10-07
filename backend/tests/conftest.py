@@ -25,6 +25,7 @@ def client(app):
         user_id = get_db().execute("SELECT id FROM users WHERE role='ADMIN'").fetchone()["id"]
     with client.session_transaction() as session:
         session["user_id"] = user_id
+        session["auth_version"] = 1
         session["csrf"] = "test-csrf"
     return client
 

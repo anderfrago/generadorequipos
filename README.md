@@ -2,6 +2,8 @@
 
 Migración de Google Apps Script a **Flask + SQLite** y **Angular 22 + Bootstrap 5 + SCSS**. Interfaz y documentación en castellano. Preparada para servir backend y frontend desde una cuenta gratuita de PythonAnywhere.
 
+Consulta la [guía de privacidad y actualización](manual/08-privacidad-y-actualizacion.md) antes de actualizar: incluye migración, caducidad de enlaces y borrado efectivo.
+
 ## Empezar
 
 Consulta [el manual de instalación y despliegue](manual/README.md). Incluye desarrollo local, Google OAuth, PythonAnywhere, copias de seguridad y actualizaciones.

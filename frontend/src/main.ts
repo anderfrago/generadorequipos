@@ -18,9 +18,9 @@ import { StudentPage } from './app/student';
 class HomePage {}
 
 @Component({selector: 'app-root', imports: [RouterLink, RouterOutlet], template: `
-  <header class="topbar"><div class="container d-flex align-items-center justify-content-between gap-3"><a routerLink="/" class="brand"><img class="brand-logo" src="https://cuatrovientos.org/wp-content/uploads/2025/01/LOGO-CENTRO-INTEGRADO-CUATROVIENTOS-300x115-2.png" alt="Centro Integrado Cuatrovientos" width="300" height="115"><span class="brand-title">Equipos equilibrados</span></a><nav class="d-flex align-items-center gap-3"><a routerLink="/teacher">Panel docente</a>@if(api.user(); as user){<span class="small d-none d-md-inline">{{user.name}}</span><button class="btn btn-sm btn-outline-secondary" (click)="logout()">Salir</button>}</nav></div></header>
+  <header class="topbar"><div class="container d-flex align-items-center justify-content-between gap-3"><a routerLink="/" class="brand"><img class="brand-logo" src="/images/cuatrovientos-logo.png" alt="Centro Integrado Cuatrovientos" width="300" height="115"><span class="brand-title">Equipos equilibrados</span></a><nav class="d-flex align-items-center gap-3"><a routerLink="/teacher">Panel docente</a>@if(api.user(); as user){<span class="small d-none d-md-inline">{{user.name}}</span><button class="btn btn-sm btn-outline-secondary" (click)="logout()">Salir</button>}</nav></div></header>
   <main class="container py-4 py-lg-5">@if(error()){<div class="alert alert-danger" role="alert">{{error()}}</div>}@if(ready()){<router-outlet/>}@else{<p role="status">Cargando…</p>}</main>
-  <footer class="container py-4 small text-secondary">Una herramienta para orientar la observación y el trabajo en equipo.</footer>`})
+  <footer class="container py-4 small text-secondary">Una herramienta para orientar la observación y el trabajo en equipo. <a href="/privacidad">Privacidad y derechos</a></footer>`})
 class App {
   api = inject(Api); ready = signal(false); error = signal('');
   constructor() { this.api.session().then(() => this.ready.set(true)).catch(e => this.error.set(e.message)); }

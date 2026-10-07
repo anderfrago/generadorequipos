@@ -42,6 +42,7 @@ def test_class_authorization(app, client, post):
         teacher_id = get_db().execute("SELECT id FROM users WHERE role='TEACHER'").fetchone()['id']
     with client.session_transaction() as session:
         session['user_id'] = teacher_id
+        session['auth_version'] = 1
     assert client.get('/api/classes').json == []
     assert client.get('/api/classes/' + detail['classInfo']['id']).status_code == 403
     assert client.get('/api/users').status_code == 403
@@ -114,6 +115,7 @@ def test_grouping_full_flow_and_immutable_validation(client, post, monkeypatch):
     assert post(path,dict(action='swap',a=locked['teams'][0][0],b=locked['teams'][1][0],version=locked['version'])).status_code == 409
     validated = post(path,dict(action='validate',version=locked['version'])).json
     assert validated['status'] == 'VALIDATED'
+    assert validated['reviewed_by'] and validated['reviewed_at']
     assert post(path,dict(action='undo',version=validated['version'])).status_code == 409
     assert client.get('/api/proposals/'+proposal['id']+'/report/student').data.startswith(b'%PDF')
     assert client.get('/api/proposals/'+proposal['id']+'/export/csv').status_code == 200
@@ -177,7 +179,7 @@ def test_google_callback_enforces_verified_domain_and_registered_user(app, monke
     ):
         monkeypatch.setattr(oauth.google, 'authorize_access_token', lambda: {'userinfo': info})
         assert client.get('/auth/callback').status_code == 403
-    monkeypatch.setattr(oauth.google, 'authorize_access_token', lambda: {'userinfo': dict(email='admin@cuatrovientos.org', email_verified=True, hd='cuatrovientos.org')})
+    monkeypatch.setattr(oauth.google, 'authorize_access_token', lambda: {'userinfo': dict(email='admin@cuatrovientos.org', email_verified=True, hd='cuatrovientos.org', sub='google-admin')})
     assert client.get('/auth/callback').status_code == 302
     assert client.get('/api/session').json['user']['role'] == 'ADMIN'
 

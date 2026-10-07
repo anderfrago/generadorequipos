@@ -23,3 +23,6 @@ def init_db():
     Path(current_app.config["DATABASE_PATH"]).parent.mkdir(parents=True, exist_ok=True)
     get_db().executescript(Path(__file__).with_name("schema.sql").read_text(encoding="utf-8"))
 
+
+    from .privacy import migrate_privacy
+    migrate_privacy(get_db())

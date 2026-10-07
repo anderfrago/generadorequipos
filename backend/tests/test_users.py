@@ -28,7 +28,7 @@ def test_teacher_cannot_mutate_users_and_deleted_session_is_denied(app,client,po
     teacher=next(u for u in users if u['role']=='TEACHER')
     other=app.test_client()
     with other.session_transaction() as session:
-        session.update(user_id=teacher['id'],csrf='test')
+        session.update(user_id=teacher['id'],csrf='test',auth_version=1)
     for method,path in [('POST','/api/users'),('PATCH','/api/users/'+teacher['id']),('DELETE','/api/users/'+teacher['id'])]:
         assert other.open(path,method=method,json={},headers={'X-CSRF-Token':'test'}).status_code==403
     assert post('/users/'+teacher['id'],method='DELETE').status_code==200
