@@ -4,6 +4,42 @@ Migración de Google Apps Script a **Flask + SQLite** y **Angular 22 + Bootstrap
 
 Consulta la [guía de privacidad y actualización](manual/08-privacidad-y-actualizacion.md) antes de actualizar: incluye migración, caducidad de enlaces y borrado efectivo.
 
+## Adecuación al RGPD
+
+Documentación revisada el 9 de octubre de 2026 a partir de los diagramas del informe inicial y del código actual. Describe las medidas implementadas; la configuración y autorización de producción deben comprobarse aparte.
+
+La aplicación incorpora identidad Google corporativa verificada y alta docente explícita, permisos por clase y enlaces individuales caducables y revocables. Las propuestas se calculan mediante reglas y búsqueda algorítmica, sin proveedor externo de IA, y requieren validación docente registrada. La supresión de clases archivadas depende del plazo configurado y de una ejecución expresa tras vista previa; existe también un procedimiento individual que alcanza propuestas e historiales afectados. Deben minimizarse perfiles y textos libres y revisarse las copias y exportaciones externas.
+
+Estos controles apoyan la adecuación al RGPD, pero no acreditan por sí solos el cumplimiento ni sustituyen la autorización del centro. Antes del uso con datos reales deben verificarse en el despliegue, completar la información de privacidad, revisar proveedores y condiciones de tratamiento y aprobar la conservación y el borrado, incluidas copias y exportaciones.
+
+La página `/privacidad` muestra `PRIVACY_CONTROLLER`, `PRIVACY_CONTACT`, `PRIVACY_LEGAL_BASIS`, `PRIVACY_RETENTION` y `PRIVACY_PROVIDERS`, configuradas en el `.env` de cada despliegue (`backend/.env` en Generador de equipos). `PRIVACY_RETENTION` es texto informativo y no activa el borrado. Consulta los plazos y comandos operativos en la guía específica.
+
+[Guía de privacidad](manual/08-privacidad-y-actualizacion.md) · [Web](https://formadorequipos.eu.pythonanywhere.com/).
+
+El enlace utiliza el nuevo dominio europeo. La migración está en curso según la información disponible; debe confirmarse su finalización, la versión desplegada y el tratamiento de las copias del alojamiento anterior. Alojar en Europa no determina dónde procesan los datos otros proveedores.
+
+## Flujo de funcionamiento y datos
+
+```mermaid
+flowchart TD
+    G["Google corporativo verificado y docente dado de alta"] --> C["Clases, matrículas y permisos"]
+    C --> L["Enlace individual: caducidad, renovación y revocación"]
+    L --> A["Alumnado: cuestionario propio"]
+    C --> O["Observaciones docentes y relaciones"]
+    A --> B["SQLite: respuestas, perfiles y preferencias"]
+    O --> B
+    B --> M["Motor de equilibrio y propuestas; sin IA externa"]
+    M --> H["Ajustes, historial y validación docente registrada"]
+    H --> I["Informes separados para docentes y alumnado"]
+    B --> P["Clase archivada y plazo aprobado, o supresión individual"]
+    H --> P
+    P --> V["Vista previa y ejecución expresa"]
+    V --> X["Supresión de datos, propuestas e historiales según el alcance elegido"]
+```
+
+Los pasos de conservación representan una operación de mantenimiento que debe configurarse y ejecutarse; no un borrado automático por el mero transcurso del plazo.
+
+
 ## Empezar
 
 Consulta [el manual de instalación y despliegue](manual/README.md). Incluye desarrollo local, Google OAuth, PythonAnywhere, copias de seguridad y actualizaciones.
